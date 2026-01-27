@@ -3,7 +3,18 @@ import { IWebinarRepository } from 'src/webinars/ports/webinar-repository.interf
 
 export class InMemoryWebinarRepository implements IWebinarRepository {
   constructor(public database: Webinar[] = []) {}
+  
   async create(webinar: Webinar): Promise<void> {
     this.database.push(webinar);
   }
+  async findById(webinarId: string): Promise<Webinar> {
+    const webinarToFind = this.database.find(
+      (webinar) => webinar.props.id === webinarId,
+    );
+    if (!webinarToFind) {
+      throw new Error('Webinar not found');
+    }
+    return webinarToFind;
+  }
+    
 }
